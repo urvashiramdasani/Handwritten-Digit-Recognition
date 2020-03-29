@@ -30,7 +30,7 @@ class Network(object):
 
     # a is the input
     for b,w in zip(self.biases,self.weights):
-      a = sigmoid(np.dot(w,a,1)+b) # activation of next layer from previous layer
+      a = sigmoid(tf.tensordot(w,a,1)+b) # activation of next layer from previous layer
     return a
 
   def evaluate(self, test_data):
@@ -133,7 +133,6 @@ class Network(object):
           return (output_activations-y) 
 
   def predict(self, img):
-  	# test_results = [(self.feedForward(x) for x in img)]
-  	# return test_results
-  	test_results = keras.predict(img)
+  	test_results = [(self.feedForward(x) for x in img)]
   	return test_results
+  	
