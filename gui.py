@@ -22,14 +22,16 @@ def predict_digit(img):
     #convert rgb to grayscale
     img = img.convert('L')
     img = np.array(img)
+    img = tf.convert_to_tensor(img, dtype = tf.float32)
 
     #reshaping to support our model input and normalizing
-    img = img.reshape(1,28,28,1)
+    img = tf.reshape(img, [1,28,28,1])
     img = img/255.0
 
     #predicting the class
-    res = model.predict([img])[0]
-    return np.argmax(res), max(res)
+    res = model.predict([img])
+    print(res)
+    # return np.argmax(res), max(res)
 
 class App(tk.Tk):
 	def __init__(self):
@@ -58,8 +60,8 @@ class App(tk.Tk):
 		HWND = self.canvas.winfo_id() # get the handle of the canvas
 		rect = win32gui.GetWindowRect(HWND) # get the coordinate of the canvas
 		im = ImageGrab.grab(rect)
-		digit, acc = predict_digit(im)
-		self.label.configure(text= str(digit)+', '+ str(int(acc*100))+'%')
+		predict_digit(im)
+		# self.label.configure(text= "Your number : " + str(digit)) # +', '+ str(int(acc*100))+'%'
 	
 	def draw_lines(self, event):
 		self.x = event.x
