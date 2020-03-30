@@ -11,9 +11,18 @@ import win32gui
 from PIL import ImageGrab, Image
 import pickle
 import numpy as np
+from Network import *
 
-model = pickle.load(open('demo.sav', 'rb'))
-# print(model)
+# model = pickle.load(open('mnist', 'rb'))
+# print(model.biases)
+biases = pickle.load(open('biases.txt', 'rb'))
+# print(biases)
+weights = pickle.load(open('weights.txt', 'rb'))
+# for i in weights:
+# 	i = np.array(i)
+# print(weights)
+
+net = Network([28,30,10])
 
 def predict_digit(img):
 	#resize image to 28x28 pixels
@@ -22,16 +31,29 @@ def predict_digit(img):
     #convert rgb to grayscale
     img = img.convert('L')
     img = np.array(img)
-    img = tf.convert_to_tensor(img, dtype = tf.float32)
+    # img = tf.convert_to_tensor(img, dtype = tf.float32)
 
     #reshaping to support our model input and normalizing
-    img = tf.reshape(img, [1,28,28,1])
+    img = np.reshape(img, (1, 28, 28, 1))
     img = img/255.0
+    # print(img)
 
     #predicting the class
-    res = model.predict([img])
-    print(res)
-    # return np.argmax(res), max(res)
+    res = predict(img)
+    # print(type(res[0]))
+    # print(res)
+    # result = []
+    # for i in res:
+    # 	print(next(i))
+    # print(result)
+    # print(np.argmax(res))
+    return np.argmax(res, 0)
+
+def predict(img):
+	print("hello")
+	test_results = [(net.feedForward_test(x, weights, biases) for x in img)]
+	# print(type(test_results[0]))
+	yield test_results
 
 class App(tk.Tk):
 	def __init__(self):
@@ -60,8 +82,8 @@ class App(tk.Tk):
 		HWND = self.canvas.winfo_id() # get the handle of the canvas
 		rect = win32gui.GetWindowRect(HWND) # get the coordinate of the canvas
 		im = ImageGrab.grab(rect)
-		predict_digit(im)
-		# self.label.configure(text= "Your number : " + str(digit)) # +', '+ str(int(acc*100))+'%'
+		digit = predict_digit(im)
+		self.label.configure(text= "Digit : " + str(digit)) # +', '+ str(int(acc*100))+'%'
 	
 	def draw_lines(self, event):
 		self.x = event.x
