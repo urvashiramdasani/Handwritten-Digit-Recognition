@@ -36,6 +36,13 @@ net.SGD(training_data, 30, 10, 3.0)
 
 print("The model has been successfully trained.")
 
-print("Saving model into mnist.sav...")
-pickle.dump(net, open("demo.sav", "wb"))
+print("Saving model into mnist.txt file...")
+
+
+weights = np.array(net.weights)
+biases = np.array(net.biases)
+
+pickle.dump(net.weights, open("weights.txt", "wb"))
+pickle.dump(net.biases, open("biases.txt", "wb"))
+
 print("Model saved successfully!")
