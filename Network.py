@@ -11,12 +11,12 @@ import numpy as np
 # class describing the neural network
 class Network(object):
 
-  def __init__(self,sizes):
+  def __init__(self, sizes):
 
     # number of layers in the neural network
     self.num_layers = len(sizes)
 
-    # size if a list that contains the number of neurons in the respective layers 
+    # size is a list that contains the number of neurons in the respective layers 
     self.sizes = sizes
 
     self.biases = [tf.random.normal((y,1),mean=0, stddev=1, dtype=tf.dtypes.float32) for y in sizes[1:]]
@@ -26,12 +26,12 @@ class Network(object):
   # this code has problems since we do not have sigmoid for 2-d array
   # search for some way of finding exponent element wise
   # to give the output of the network given some input
-  def feedForward(self,a):
+  def feedForward(self, a):
 
     # a is the input
-    for b,w in zip(self.biases,self.weights):
+    for b,w in zip(biases,weights):
       a = sigmoid(tf.tensordot(w,a,1)+b) # activation of next layer from previous layer
-    return a
+    return np.array(a)
 
   def evaluate(self, test_data):
     """Return the number of test inputs for which the neural
@@ -130,9 +130,11 @@ class Network(object):
   def cost_derivative(self, output_activations, y):
           """Return the vector of partial derivatives \partial C_x /
           \partial a for the output activations."""
-          return (output_activations-y) 
+          return (output_activations-y)	
 
-  def predict(self, img):
-  	test_results = [(self.feedForward(x) for x in img)]
-  	return test_results
-  	
+  def feedForward_test(self, a, weights, biases):
+
+    print("hi")
+    for b,w in zip(weights, biases):
+      a = sigmoid(np.dot(w,a,1)+b)
+    return a
