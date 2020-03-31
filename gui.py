@@ -13,9 +13,12 @@ import pickle
 import numpy as np
 from Network import *
 
+
 # model = pickle.load(open('mnist', 'rb'))
 # print(model.biases)
 biases = pickle.load(open('biases.txt', 'rb'))
+biases[0] = tf.reshape(biases[0], (30,28,1))
+biases[1] = tf.reshape(biases[1], (10,28,1))
 # print(biases)
 weights = pickle.load(open('weights.txt', 'rb'))
 # for i in weights:
@@ -31,15 +34,15 @@ def predict_digit(img):
     #convert rgb to grayscale
     img = img.convert('L')
     img = np.array(img)
-    # img = tf.convert_to_tensor(img, dtype = tf.float32)
+    img = tf.convert_to_tensor(img, dtype = tf.float32)
 
     #reshaping to support our model input and normalizing
-    img = np.reshape(img, (1, 28, 28, 1))
+    img = tf.reshape(img, (1, 28, 28, 1))
     img = img/255.0
     # print(img)
 
     #predicting the class
-    res = predict(img)
+    # res = predict(img)
     # print(type(res[0]))
     # print(res)
     # result = []
@@ -47,7 +50,20 @@ def predict_digit(img):
     # 	print(next(i))
     # print(result)
     # print(np.argmax(res))
-    return np.argmax(res, 0)
+
+    test_results = [net.feedForward_test(x, weights, biases) for x in img]
+    print(test_results)
+
+    t = tf.argmax(test_results)
+    # tf.compat.v1.disable_eager_execution()
+    # print(tf.executing_eagerly())
+    # ans = tf.compat.v1.get_default_session().run(t)
+    ans = t.numpy()
+    # with tf.compat.v1.Session() as sess:
+    # 	ans = sess.run(t)
+
+    print(ans)
+    return ans
 
 def predict(img):
 	print("hello")
