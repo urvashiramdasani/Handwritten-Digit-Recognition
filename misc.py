@@ -22,3 +22,10 @@ def sigmoid(z):
 def sigmoid_prime(z):
   """Derivative of the sigmoid function."""
   return sigmoid(z)*(1-sigmoid(z))
+
+def feedForward_test(a, weights, biases):
+
+    # print("hi")
+    for b,w in zip(biases, weights):
+      a = sigmoid(tf.tensordot(w,a,1)+b)
+    return a
