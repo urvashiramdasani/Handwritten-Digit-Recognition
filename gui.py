@@ -12,20 +12,24 @@ from PIL import ImageGrab, Image
 import pickle
 import numpy as np
 from Network import *
+from misc import sigmoid
 
 
 # model = pickle.load(open('mnist', 'rb'))
 # print(model.biases)
 biases = pickle.load(open('biases.txt', 'rb'))
-biases[0] = tf.reshape(biases[0], (30,28,1))
-biases[1] = tf.reshape(biases[1], (10,28,1))
+# print(biases)
+biases[0] = tf.reshape(biases[0], (30,28))
+biases[1] = tf.reshape(biases[1], (10,28))
 # print(biases)
 weights = pickle.load(open('weights.txt', 'rb'))
+weights[0] = tf.reshape(weights[0], (30,28))
+weights[1] = tf.reshape(weights[1], (30,10))
 # for i in weights:
 # 	i = np.array(i)
 # print(weights)
 
-net = Network([28,30,10])
+# net = Network([28,30,10])
 
 def predict_digit(img):
 	#resize image to 28x28 pixels
@@ -37,7 +41,7 @@ def predict_digit(img):
     img = tf.convert_to_tensor(img, dtype = tf.float32)
 
     #reshaping to support our model input and normalizing
-    img = tf.reshape(img, (1, 28, 28, 1))
+    img = tf.reshape(img, (1, 28, 28))
     img = img/255.0
     # print(img)
 
@@ -50,20 +54,27 @@ def predict_digit(img):
     # 	print(next(i))
     # print(result)
     # print(np.argmax(res))
+    test_results = []
 
-    test_results = [net.feedForward_test(x, weights, biases) for x in img]
+    for x in img:
+    	for b,w in zip(biases, weights):
+    		print(w.shape)
+    		print(x.shape)
+    		test_results = [sigmoid(tf.tensordot(w,x,1)+b)]
+
+    # test_results = [feedForward_test(x, weights, biases) for x in img]
     print(test_results)
 
-    t = tf.argmax(test_results)
+    # t = tf.argmax(test_results)
     # tf.compat.v1.disable_eager_execution()
     # print(tf.executing_eagerly())
     # ans = tf.compat.v1.get_default_session().run(t)
-    ans = t.numpy()
+    # ans = t.numpy()
     # with tf.compat.v1.Session() as sess:
     # 	ans = sess.run(t)
 
-    print(ans)
-    return ans
+    # print(ans)
+    return 0
 
 def predict(img):
 	print("hello")
