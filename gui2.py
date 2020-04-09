@@ -26,14 +26,14 @@ def predict_digit(img):
     # img = tf.convert_to_tensor(img, dtype = tf.float32)
 
     #reshaping to support our model input and normalizing
-    img = np.reshape(img, (1, 784, 1))
+    img = np.reshape(img, (1, 784))
     img = img/255.0
 
     t = sigm(np.dot(net.weights[0], img[0]) + net.biases[0])
     res = sigm(np.dot(net.weights[1], t) + net.biases[1])
     print(res)
 
-    return np.argmax(res)
+    return np.argmax(res, axis=-1)
 
 
 def predict(img):
@@ -45,7 +45,7 @@ def predict(img):
 
 def sigm(z):
 	z = np.array(z, dtype=np.float64)
-	return 1.0/(1.0+np.exp(z))
+	return 1.0/(1.0+np.exp(-z))
 
 
 class App(tk.Tk):
