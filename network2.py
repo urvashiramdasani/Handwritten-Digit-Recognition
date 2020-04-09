@@ -34,7 +34,7 @@ class QuadraticCost(object):
 
         """
         # return 0.5*np.linalg.norm(a-y)**2
-        return (0.5*tf.norm(a-y)**2).numpy()
+        return (0.5*tf.norm(a-y, axis=-1)**2).numpy()
 
     @staticmethod
     def delta(z, a, y):
@@ -269,10 +269,10 @@ class Network(object):
 
         """
         if convert:
-            results = [(tf.argmax(self.feedforward(x)), tf.argmax(y))
+            results = [(tf.argmax(self.feedforward(x), axis=-1), tf.argmax(y))
                        for (x, y) in data]
         else:
-            results = [(tf.argmax(self.feedforward(x)), y)
+            results = [(tf.argmax(self.feedforward(x), axis=-1), y)
                         for (x, y) in data]
         return sum(int(x == y) for (x, y) in results)
 
@@ -289,7 +289,7 @@ class Network(object):
             if convert: y = vectorized_result(y)
             cost += self.cost.fn(a, y)/len(data)
         cost += 0.5*(lmbda/len(data))*sum(
-            tf.norm(w)**2 for w in self.weights)
+            tf.norm(w, axis=-1)**2 for w in self.weights)
         return cost
 
     def save(self, filename):
