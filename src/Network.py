@@ -2,7 +2,10 @@
 network.py
 ~~~~~~~~~~
 A simple code for recognizing handwritten digits. We have used stochastic gradient descent algorithm to train 
-neural network. 
+neural network. This is the one of the algorithm to get the set of minimizing weights and biases for neural network.
+The main perpose of this algorithm is to find the lowest point of function. It starts with random point on a function
+and travels down to its slope step by step such that it reaches to the minimum point of function. In our program it 
+starts with random weights and biases and then it upadates them such that the cost of our network be minimal.
 """
 
 #### Libraries
@@ -27,17 +30,10 @@ class Network(object):
         self.sizes = sizes
         self.num_layers = len(sizes)
         self.biases = [tf.convert_to_tensor(b) for b in data["biases"]]
-        self.weights = [tf.convert_to_tensor(w) for w in data["weights"]]
-        # self.biases=data["biases"]
-        # self.weights=data["weights"]
-        # self.biases=np.array(self.biases)
-        # self.weights=np.array(self.weights)
-        # print(self.biases.shape,self.weights.shape)
-        # self.weights = [np.array(w) for w in data["weights"]]
-        # self.biases = [np.array(b) for b in data["biases"]]
+        self.weights = [tf.convert_to_tensor(w) for w in data["weights"]
 
     def feedforward(self, a):
-        """Ruturns the activation of next layer as an input of a"""
+        """Returns the activation of next layer as an input of a"""
         for b, w in zip(self.biases, self.weights):
             a = sigmoid(tf.tensordot(w,a,axes=1)+b)
         return a
@@ -81,7 +77,7 @@ class Network(object):
 
     def backprop(self, x, y):
         """
-        Return a tuple of nabla_b and nabla_w which is the biases and weights of perticular image `x`
+        Return a tuple of nabla_b and nabla_w which is the biases and weights of particular image `x`
         """
         nabla_b = [tf.zeros((b.shape),tf.float32) for b in self.biases]
         nabla_w = [tf.zeros((w.shape),tf.float32) for w in self.weights]
