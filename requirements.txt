@@ -1,0 +1,14 @@
+Python : version 3.7.7
+
+APIs - 
+Tensorflow : version 2.1.0
+Pillow : version 7.0.0
+Numpy : version 1.18.2
+Keras : version 2.3.1
+Tkinter
+Win32gui 
+
+Libraries - 
+Random
+Json
+Math
