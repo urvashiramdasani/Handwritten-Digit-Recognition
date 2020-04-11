@@ -4,7 +4,7 @@ This Project has been developed and maintained by a group of three students name
 
 ## Description
 
-We have Artificial Neural Networks from grass root level with 3 layers to implement this model. The architecture of network is defined in Network.py, while the model is being created in test.py file. For running the model, we have gui.py file. 
+We have used Artificial Neural Networks from grass root level with 3 layers to implement this model. The architecture of network is defined in Network.py, while the model is being created in test.py file. For running the model, we have gui.py file. 
 
 ## Requirements
 
