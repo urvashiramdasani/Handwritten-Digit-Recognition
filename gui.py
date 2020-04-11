@@ -19,6 +19,8 @@ def predict_digit(img):
     #convert rgb to grayscale
     img = img.convert('L')
     img = np.array(img)
+
+#to set image array such that it can matchs to our input data
     img=255-img
     for i in range(28):
     	for j in range(28):
