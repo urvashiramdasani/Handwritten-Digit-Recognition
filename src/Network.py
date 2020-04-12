@@ -1,6 +1,4 @@
 """
-network.py
-~~~~~~~~~~
 A simple code for recognizing handwritten digits. We have used stochastic gradient descent algorithm to train 
 neural network. This is the one of the algorithm to get the set of minimizing weights and biases for neural network.
 The main perpose of this algorithm is to find the lowest point of function. It starts with random point on a function
@@ -8,13 +6,9 @@ and travels down to its slope step by step such that it reaches to the minimum p
 starts with random weights and biases and then it upadates them such that the cost of our network be minimal.
 """
 
-#### Libraries
-# Standard library
 import random
 import json
 import tensorflow as tf
-
-# Third-party libraries
 import numpy as np
 
 class Network(object):
@@ -25,12 +19,13 @@ class Network(object):
         If for example sizes=[1,2,3] , that means there are total three layers of neurons in network and first layer
         contains one, second contains 2 and third layer of network contains three neurons
         """
-        data=load("model.txt")
+        data=load("../model/model.txt")
         
         self.sizes = sizes
         self.num_layers = len(sizes)
         self.biases = [tf.convert_to_tensor(b) for b in data["biases"]]
-        self.weights = [tf.convert_to_tensor(w) for w in data["weights"]
+        self.weights = [tf.convert_to_tensor(w) for w in data["weights"]]
+
 
     def feedforward(self, a):
         """Returns the activation of next layer as an input of a"""
@@ -77,7 +72,9 @@ class Network(object):
 
     def backprop(self, x, y):
         """
-        Return a tuple of nabla_b and nabla_w which is the biases and weights of particular image `x`
+        Return a tuple of nabla_b and nabla_w which is the biases and weights of perticular image `x`. First we give x as 
+        input and find the output. Then we compare it with our expected output and find cost. Using this cost we return
+        biases and weights for this input as nabla_w and nabla_b respectively.
         """
         nabla_b = [tf.zeros((b.shape),tf.float32) for b in self.biases]
         nabla_w = [tf.zeros((w.shape),tf.float32) for w in self.weights]
@@ -135,15 +132,11 @@ def load(filename):
     f = open(filename, "r")
     data = json.load(f)
     f.close()
-    # cost = getattr(sys.modules[__name__], data["cost"])
-    # net = Network(data["sizes"])
-    # net.weights = [np.array(w) for w in data["weights"]]
-    # net.biases = [np.array(b) for b in data["biases"]]
     return data
 
 #### Miscellaneous functions
 def sigmoid(z):
-    """The sigmoid function. to set activations fo layers"""
+    """The sigmoid function to set activations fo layers"""
     return 1.0/(1.0+np.exp(-z))
 
 def sigmoid_prime(z):
