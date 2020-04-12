@@ -5,13 +5,12 @@ from PIL import ImageGrab, Image
 import json
 import numpy as np
 from src.Network import *
-# from misc import sigmoid
-import tensorflow as tf
 
-data=load("model/model.txt")#load data from file
+data=load("model/model.txt")#load the neural network from the file
 weights = [np.array(w) for w in data["weights"]]
 biases = [np.array(b) for b in data["biases"]]
 
+#predict the digit of our input image
 def predict_digit(img):
 	#resize image to 28x28 pixels
     img = img.resize((28,28))
@@ -20,7 +19,7 @@ def predict_digit(img):
     img = img.convert('L')
     img = np.array(img)
 
-#to set image array such that it can matchs to our input data
+ 	#to set image array such that it can matchs to our input data
     img=255-img
     for i in range(28):
     	for j in range(28):
@@ -36,8 +35,7 @@ def predict_digit(img):
         activation = sigmoid(z)
         activations.append(activation)
 
-    act=[float(activations[-1][i]) for i in range(10)]
-    print(act)
+    #return the index value of neuron of last activation layer which has high activation value
     return np.argmax(activations[-1])
 
 
@@ -52,7 +50,7 @@ class App(tk.Tk):
 		self.x = self.y = 0
 
 		# Creating elements
-		self.canvas = tk.Canvas(self, width=300, height=300, bg = "white", cursor="cross")
+		self.canvas = tk.Canvas(self, width=400, height=400, bg = "white", cursor="cross")
 		self.label = tk.Label(self, text="Thinking..", font=("Helvetica", 48))
 		self.classify_btn = tk.Button(self, text = "Recognise", command = self.classify_handwriting) 
 		self.button_clear = tk.Button(self, text = "Clear", command = self.clear_all)
@@ -62,12 +60,13 @@ class App(tk.Tk):
 		self.label.grid(row=0, column=1,pady=2, padx=2)
 		self.classify_btn.grid(row=1, column=1, pady=2, padx=2)
 		self.button_clear.grid(row=1, column=0, pady=2)
-		# self.canvas.bind("<Motion>", self.start_pos)
 		self.canvas.bind("<B1-Motion>", self.draw_lines)
 
 
 	def clear_all(self):
 		self.canvas.delete("all")
+		self.label.configure(text="Thinking..", font=("Helvetica", 48))
+
 
 	def classify_handwriting(self):
 		HWND = self.canvas.winfo_id() # get the handle of the canvas
@@ -79,7 +78,7 @@ class App(tk.Tk):
 	def draw_lines(self, event):
 		self.x = event.x
 		self.y = event.y
-		r=8
+		r=9
 		self.canvas.create_oval(self.x-r, self.y-r, self.x + r, self.y + r, fill='black')
 
 app = App()
