@@ -6,6 +6,8 @@ This Project has been developed and maintained by a group of three students name
 
 We have used Artificial Neural Networks from grass root level with 3 layers to implement this model. The architecture of network is defined in Network.py, while the model is being created in test.py file. For running the model, we have gui.py file. 
 
+Watch the videos for full understanding of the project. Order : Introduction, Explanation Part 1, Explanation Part 2, Explanation Part 3, Output1, Output2.
+
 ## Requirements
 
 Kindly refer the requirements.txt file to get the system requirements. The dependencies can be installed as : 
@@ -19,7 +21,6 @@ This project can be simply run by typing the following command in console.
 ```
 python gui.py
 ```
-Note : In case all the dependencies don't work, kindly see the video present to view the actual functioning of our model.
 
 ## Resources
 
